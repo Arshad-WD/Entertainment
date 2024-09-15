@@ -1,0 +1,108 @@
+/* General Navbar Styles */
+.navbar {
+  background-color: #2D3748; /* Dark background color */
+}
+
+.brand {
+  color: #F7FAFC; /* Light color for the brand name */
+  font-size: 2rem; /* Adjust font size */
+  transition: color 0.3s ease-in-out;
+}
+
+.brand:hover {
+  color: #FBBF24; /* Light color on hover */
+}
+
+/* Navbar Link Styles */
+.nav-link, .nav-link-mobile {
+  color: #E2E8F0; /* Light gray color for nav links */
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  position: relative;
+  overflow: hidden;
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.nav-link::before, .nav-link-mobile::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: -100%;
+  width: 300%;
+  height: 300%;
+  background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.3) 50%, rgba(255,255,255,0) 100%);
+  transform: translateY(-50%) rotate(45deg);
+  transition: all 0.75s ease-in-out;
+}
+
+.nav-link:hover::before, .nav-link-mobile:hover::before {
+  left: 100%;
+}
+
+.nav-link:hover, .nav-link-mobile:hover {
+  color: #FBBF24; /* Change text color on hover */
+  transform: scale(1.1); /* Slightly enlarge the link */
+}
+
+/* Mobile Menu Styles */
+.mobile-nav {
+  display: none;
+}
+
+.nav-link-mobile {
+  color: #E2E8F0; /* Light gray color for mobile links */
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+  border-bottom: 1px solid #4A5568;
+  width: 100%;
+  text-align: right;
+  position: relative;
+  overflow: hidden;
+}
+
+.nav-link-mobile::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: -100%;
+  width: 300%;
+  height: 300%;
+  background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.3) 50%, rgba(255,255,255,0) 100%);
+  transform: translateY(-50%) rotate(45deg);
+  transition: all 0.75s ease-in-out;
+}
+
+.nav-link-mobile:hover::before {
+  left: 100%;
+}
+
+.nav-link-mobile:hover {
+  color: #FBBF24; /* Change text color on hover */
+}
+
+/* Hamburger Menu Styles */
+.hamburger-menu {
+  display: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.hamburger-menu:hover {
+  color: #FBBF24; /* Change color on hover */
+}
+
+@media screen and (max-width: 700px) {
+  .menu {
+    display: none;
+  }
+
+  .hamburger-menu {
+    display: block;
+  }
+
+  .mobile-nav.active {
+    display: flex;
+  }
+}
