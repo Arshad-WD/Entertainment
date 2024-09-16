@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import SearchBar from './SearchBar';
+import SearchBar from './searchBar';
 import Genre from './genre';
-import MovieCard from './MovieCard';
+import MovieCard from './movieCard';
 import { fetchTopMovies, fetchTopSeries, fetchMoviesByGenre, fetchAnimeMovies, fetchOtherMovies } from './utilities/api';
 import '../components/responsive.css';
 import tempImg from '../assets/temperory.jpeg';

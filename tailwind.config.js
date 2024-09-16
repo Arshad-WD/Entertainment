@@ -8,7 +8,8 @@ export default {
     extend: {
       backgroundImage: {
         'movies': "url('assets/movie.jpeg')",
-        'temp': "url('assets/temp.jpg')"
+        'temp': "url('assets/temp.jpg')",
+        'signimg': "url('assets/sign.jpg')",
       },
       keyframes: {
         'slide-in': {
