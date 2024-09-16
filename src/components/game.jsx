@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import SearchBar from './SearchBar';
+import SearchBar from './searchBar';
 import Genre from './genre';
 import GameCard from './gameCard';
 import { fetchTopGames } from '../components/utilities/gameApi';

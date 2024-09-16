@@ -53,8 +53,8 @@ const Navbar = () => {
       </nav>
 
       <div className='auth-links hidden lg:flex space-x-4'>
-        <Link to="/login" className='nav-link'>LOGIN</Link>
-        <Link to="/signup" className='nav-link'>SIGN IN</Link>
+        <Link to="/sign-in" className='nav-link'>LOGIN</Link>
+        <Link to="/sign-in" className='nav-link'>SIGN IN</Link>
       </div>
 
       {isMobileMenuOpen && (
