@@ -116,7 +116,7 @@ const Movie = () => {
         <Genre onFetchGenres={handleFetchGenres} setIsLoading={setIsLoading} />
       </div>
 
-      <div className="mt-4 ml-32 w-full flex flex-col items-center">
+      <div className="mt-4 ml-32 w-full flex flex-col items-center p-10">
         {isLoading && <p className='text-white'>Loading genres...</p>}
         {genres.length > 0 && (
           <div className="flex flex-wrap justify-center">
