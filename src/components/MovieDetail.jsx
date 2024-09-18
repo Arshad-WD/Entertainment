@@ -49,7 +49,7 @@ const MovieDetail = () => {
         <img
           src={movie.poster_path ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` : tempImg}
           alt={movie.title}
-          className="w-1/6 h-auto rounded-lg ml-20 mr-10"
+          className="w-3/12 h-auto rounded-lg ml-20 mr-10"
         />
         <div className="ml-4 w-2/3">
           <h1 className="text-2xl font-bold text-white">{movie.title}</h1>

@@ -35,6 +35,7 @@
   z-index: 9999;
   transition: transform 0.2s ease;
   animation: colorChange 5s infinite; /* Added color change animation */
+  mix-blend-mode: difference;
 }
 
 .cursor-ray {

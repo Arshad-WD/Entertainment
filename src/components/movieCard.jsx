@@ -28,10 +28,10 @@ const MovieCard = ({ id, title, imageUrl, rating }) => {
               {rating}
             </span>
             <button
-              className="p-2 rounded-full flex justify-center items-center hover:bg-gray-700"
+              className="p-2 rounded-full flex justify-center items-center bg-gray-600 hover:bg-gray-700"
               style={{ width: '32px', height: '32px' }}
             >
-              <FaStar color="white" />
+              <FaStar color="white "  />
             </button>
           </div>
         </div>

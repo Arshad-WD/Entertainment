@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import { IoIosArrowDropright, IoIosArrowDropleft } from 'react-icons/io';
 import SearchBar from './searchBar';
 import Genre from './genre';
 import MovieCard from './movieCard';
+import SkeletonCard from './skeletonCard'; 
 import { fetchTopMovies, fetchTopSeries, fetchMoviesByGenre, fetchAnimeMovies, fetchOtherMovies } from './utilities/api';
 import '../components/responsive.css';
 import tempImg from '../assets/temperory.jpeg';
@@ -109,22 +111,30 @@ const Movie = () => {
     });
   };
 
+  const renderSkeletons = () => (
+    <div className="flex flex-nowrap overflow-hidden mx-12">
+      {Array.from({ length: 6 }).map((_, index) => (
+        <SkeletonCard key={index} />
+      ))}
+    </div>
+  );
+
   return (
     <div className="w-full h-auto flex flex-col justify-center items-center bg-gray-950 overflow-x-hidden">
-      <div className="mt-6 top-30 w-full flex items-center justify-center space-x-4">
+      <div className="mt-6 top-10 w-full flex items-center justify-center space-x-4">
         <SearchBar />
         <Genre onFetchGenres={handleFetchGenres} setIsLoading={setIsLoading} />
       </div>
 
-      <div className="mt-4 ml-32 w-full flex flex-col items-center p-10">
+      <div className="mt-4 ml-32 mr-32 w-full flex flex-col items-center p-10">
         {isLoading && <p className='text-white'>Loading genres...</p>}
         {genres.length > 0 && (
           <div className="flex flex-wrap justify-center">
             {genres.map((genre, index) => (
               <button
                 key={index}
-                className={`p-3 px-6 m-2 rounded-3xl outline-none font-semibold
-                ${selectedGenre === genre ? 'bg-white text-black' : 'bg-slate-400 hover:bg-gray-300 text-black'}`}
+                className={`p-2 px-6 m-2 rounded-3xl outline-none font-semibold
+                ${selectedGenre === genre ? 'bg-white text-black' : 'bg-slate-400 hover:bg-gray-300 text-black text-[17px]'}`}
                 onClick={() => handleGenreClick(genre)}
               >
                 {genre}
@@ -140,31 +150,33 @@ const Movie = () => {
           {canShowPrevious('topMovies') && (
             <button
               onClick={() => handleNavigation('topMovies', 'prev')}
-              className={`absolute left-6 p-3 bg-gray-600 rounded-full hover:bg-gray-700 ${canShowPrevious('topMovies') ? 'opacity-100' : 'opacity-0'}`}
+              className={`absolute left-4 p-1 bg-gray-600 rounded-md h-28 hover:bg-gray-700 ${canShowPrevious('topMovies') ? 'opacity-100' : 'opacity-0'}`}
               style={{ zIndex: 10 }}
             >
-              &lt;
+              <IoIosArrowDropleft size={24} color="white" />
             </button>
           )}
-          <div className="flex flex-nowrap overflow-hidden mx-12">
-            {getVisibleMovies('topMovies').map((movie, index) => (
-              <MovieCard
-                key={index}
-                id = {movie.id}
-                title={movie.title}
-                imageUrl={movie.poster_path ? `https://image.tmdb.org/t/p/w200${movie.poster_path}` : tempImg}
-                rating={movie.vote_average}
-                className="mx-2"
-              />
-            ))}
-          </div>
+          {isLoading ? renderSkeletons() : (
+            <div className="flex flex-nowrap overflow-hidden mx-10">
+              {getVisibleMovies('topMovies').map((movie, index) => (
+                <MovieCard
+                  key={index}
+                  id={movie.id}
+                  title={movie.title}
+                  imageUrl={movie.poster_path ? `https://image.tmdb.org/t/p/w200${movie.poster_path}` : tempImg}
+                  rating={movie.vote_average}
+                  className="mx-2"
+                />
+              ))}
+            </div>
+          )}
           {canShowNext('topMovies') && (
             <button
               onClick={() => handleNavigation('topMovies', 'next')}
-              className={`absolute right-6 p-3 bg-gray-600 rounded-full hover:bg-gray-700 ${canShowNext('topMovies') ? 'opacity-100' : 'opacity-0'}`}
+              className={`absolute right-6 p-1 bg-gray-600 rounded-md h-28 hover:bg-gray-700 ${canShowNext('topMovies') ? 'opacity-100' : 'opacity-0'}`}
               style={{ zIndex: 10 }}
             >
-              &gt;
+              <IoIosArrowDropright size={24} color="white" />
             </button>
           )}
         </div>
@@ -181,38 +193,42 @@ const Movie = () => {
             {canShowPrevious('topSeries') && (
               <button
                 onClick={() => handleNavigation('topSeries', 'prev')}
-                className={`absolute left-6 p-3 bg-gray-600 rounded-full hover:bg-gray-700 ${canShowPrevious('topSeries') ? 'opacity-100' : 'opacity-0'}`}
+                className={`absolute left-6 p-1 bg-gray-600 rounded-md h-28 hover:bg-gray-700 ${canShowPrevious('topSeries') ? 'opacity-100' : 'opacity-0'}`}
                 style={{ zIndex: 10 }}
               >
-                &lt;
+                <IoIosArrowDropleft size={24} color="white" />
               </button>
             )}
-            <div className="flex flex-nowrap overflow-hidden mx-12 ml-16">
-              {getVisibleMovies('topSeries').map((series, index) => (
-                <MovieCard
-                  key={index}
-                  id = {series.id}
-                  title={series.name}
-                  imageUrl={series.poster_path ? `https://image.tmdb.org/t/p/w200${series.poster_path}` : tempImg}
-                  rating={series.vote_average}
-                  className="mx-2"
-                />
-              ))}
-            </div>
+            {isLoading ? renderSkeletons() : (
+              <div className="flex flex-nowrap overflow-hidden mx-12">
+                {getVisibleMovies('topSeries').map((series, index) => (
+                  <MovieCard
+                    key={index}
+                    id={series.id}
+                    title={series.name}
+                    imageUrl={series.poster_path ? `https://image.tmdb.org/t/p/w200${series.poster_path}` : tempImg}
+                    rating={series.vote_average}
+                    className="mx-2"
+                  />
+                ))}
+              </div>
+            )}
             {canShowNext('topSeries') && (
               <button
                 onClick={() => handleNavigation('topSeries', 'next')}
-                className={`absolute right-6 p-3 bg-gray-600 rounded-full hover:bg-gray-700 ${canShowNext('topSeries') ? 'opacity-100' : 'opacity-0'}`}
+                className={`absolute right-6 p-1 bg-gray-600 rounded-md h-28 hover:bg-gray-700 ${canShowNext('topSeries') ? 'opacity-100' : 'opacity-0'}`}
                 style={{ zIndex: 10 }}
               >
-                &gt;
+                <IoIosArrowDropright size={24} color="white" />
               </button>
             )}
           </div>
         </div>
+      </div>
 
-        {/* Anime Movies Section */}
-        <div className='AnimeMovies px-4 py-2 text-left text-white flex items-center mt-10'>
+      {/* Anime Movies Section */}
+      <div className='Card-container w-screen h-5/6 bg-gray-800 mt-10'>
+        <div className='TopMovieWeek px-4 py-2 text-left text-white flex items-center'>
           <h2 className='mr-4 font-semibold'>Anime Movies</h2>
           <div className='flex-grow border-t border-gray-600'></div>
         </div>
@@ -221,38 +237,42 @@ const Movie = () => {
             {canShowPrevious('animeMovies') && (
               <button
                 onClick={() => handleNavigation('animeMovies', 'prev')}
-                className={`absolute left-6 p-3 bg-gray-600 rounded-full hover:bg-gray-700 ${canShowPrevious('animeMovies') ? 'opacity-100' : 'opacity-0'}`}
+                className={`absolute left-6 p-1 bg-gray-600 rounded-md h-28 hover:bg-gray-700 ${canShowPrevious('animeMovies') ? 'opacity-100' : 'opacity-0'}`}
                 style={{ zIndex: 10 }}
               >
-                &lt;
+                <IoIosArrowDropleft size={24} color="white" />
               </button>
             )}
-            <div className="flex flex-nowrap overflow-hidden mx-12 ml-16">
-              {getVisibleMovies('animeMovies').map((movie, index) => (
-                <MovieCard
-                  key={index}
-                  id = {movie.id}
-                  title={movie.title}
-                  imageUrl={movie.poster_path ? `https://image.tmdb.org/t/p/w200${movie.poster_path}` : tempImg}
-                  rating={movie.vote_average}
-                  className="mx-2"
-                />
-              ))}
-            </div>
+            {isLoading ? renderSkeletons() : (
+              <div className="flex flex-nowrap overflow-hidden mx-12">
+                {getVisibleMovies('animeMovies').map((anime, index) => (
+                  <MovieCard
+                    key={index}
+                    id={anime.id}
+                    title={anime.title}
+                    imageUrl={anime.poster_path ? `https://image.tmdb.org/t/p/w200${anime.poster_path}` : tempImg}
+                    rating={anime.vote_average}
+                    className="mx-2"
+                  />
+                ))}
+              </div>
+            )}
             {canShowNext('animeMovies') && (
               <button
                 onClick={() => handleNavigation('animeMovies', 'next')}
-                className={`absolute right-6 p-3 bg-gray-600 rounded-full hover:bg-gray-700 ${canShowNext('animeMovies') ? 'opacity-100' : 'opacity-0'}`}
+                className={`absolute right-6 p-1 bg-gray-600 rounded-md h-28 hover:bg-gray-700 ${canShowNext('animeMovies') ? 'opacity-100' : 'opacity-0'}`}
                 style={{ zIndex: 10 }}
               >
-                &gt;
+                <IoIosArrowDropright size={24} color="white" />
               </button>
             )}
           </div>
         </div>
+      </div>
 
-        {/* Other Movies Section */}
-        <div className='OtherMovies px-4 py-2 text-left text-white flex items-center mt-10'>
+      {/* Other Movies Section */}
+      <div className='Card-container w-screen h-5/6 bg-gray-800 mt-10'>
+        <div className='TopMovieWeek px-4 py-2 text-left text-white flex items-center'>
           <h2 className='mr-4 font-semibold'>Other Movies</h2>
           <div className='flex-grow border-t border-gray-600'></div>
         </div>
@@ -261,31 +281,33 @@ const Movie = () => {
             {canShowPrevious('otherMovies') && (
               <button
                 onClick={() => handleNavigation('otherMovies', 'prev')}
-                className={`absolute left-6 p-3 bg-gray-600 rounded-full hover:bg-gray-700 ${canShowPrevious('otherMovies') ? 'opacity-100' : 'opacity-0'}`}
+                className={`absolute left-6 p-1 bg-gray-600 rounded-md h-28 hover:bg-gray-700 ${canShowPrevious('otherMovies') ? 'opacity-100' : 'opacity-0'}`}
                 style={{ zIndex: 10 }}
               >
-                &lt;
+                <IoIosArrowDropleft size={24} color="white" />
               </button>
             )}
-            <div className="flex flex-nowrap overflow-hidden mx-12 ml-16">
-              {getVisibleMovies('otherMovies').map((movie, index) => (
-                <MovieCard
-                  key={index}
-                  id = {movie.id}
-                  title={movie.title}
-                  imageUrl={movie.poster_path ? `https://image.tmdb.org/t/p/w200${movie.poster_path}` : tempImg}
-                  rating={movie.vote_average}
-                  className="mx-2"
-                />
-              ))}
-            </div>
+            {isLoading ? renderSkeletons() : (
+              <div className="flex flex-nowrap overflow-hidden mx-12">
+                {getVisibleMovies('otherMovies').map((other, index) => (
+                  <MovieCard
+                    key={index}
+                    id={other.id}
+                    title={other.title}
+                    imageUrl={other.poster_path ? `https://image.tmdb.org/t/p/w200${other.poster_path}` : tempImg}
+                    rating={other.vote_average}
+                    className="mx-2"
+                  />
+                ))}
+              </div>
+            )}
             {canShowNext('otherMovies') && (
               <button
                 onClick={() => handleNavigation('otherMovies', 'next')}
-                className={`absolute right-6 p-3 bg-gray-600 rounded-full hover:bg-gray-700 ${canShowNext('otherMovies') ? 'opacity-100' : 'opacity-0'}`}
+                className={`absolute right-6 p-1 bg-gray-600 rounded-md h-28 hover:bg-gray-700 ${canShowNext('otherMovies') ? 'opacity-100' : 'opacity-0'}`}
                 style={{ zIndex: 10 }}
               >
-                &gt;
+                <IoIosArrowDropright size={24} color="white" />
               </button>
             )}
           </div>
