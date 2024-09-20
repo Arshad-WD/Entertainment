@@ -27,7 +27,7 @@ const MovieCard = ({ id, title, imageUrl, rating }) => {
             <span className="text-green-400 font-bold" style={{ fontSize: '14px' }}>
               {rating}
             </span>
-            <button
+            <button onClick={null}
               className="p-2 rounded-full flex justify-center items-center bg-gray-600 hover:bg-gray-700"
               style={{ width: '32px', height: '32px' }}
             >

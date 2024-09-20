@@ -1,127 +1,112 @@
-import React, { useState, useEffect } from 'react';
-import SearchBar from './searchBar';
-import Genre from './genre';
-import GameCard from './gameCard';
-import { fetchTopGames } from '../components/utilities/gameApi';
-import '../components/responsive.css';
-import tempImg from '../assets/temperory.jpeg';
+import React, { useState, useEffect, useRef } from 'react';
+import { gsap } from 'gsap';
+import GameCard from './gameCard'; // Updated GameCard component
+import SkeletonCard from './skeletonCard'; // Updated SkeletonCard component
+import { fetchGames, fetchSimilarGames  } from './utilities/gameApi'; // Ensure fetchSimilarGames is imported
 
-const Game = () => {
-  const [genres, setGenres] = useState([]);
+const GameDisplay = () => {
+  const [games, setGames] = useState([]);
+  const [similarGames, setSimilarGames] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [selectedGenre, setSelectedGenre] = useState(null);
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [topGames, setTopGames] = useState([]);
-  const [error, setError] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [selectedGameId, setSelectedGameId] = useState(null);
+  const containerRef = useRef(null);
 
   useEffect(() => {
-    const loadData = async () => {
+    const loadGames = async () => {
       setIsLoading(true);
       try {
-        const games = await fetchTopGames('');
-        setTopGames(games);
+        const gamesData = await fetchGames(currentPage);
+        setGames((prev) => [...prev, ...gamesData]);
       } catch (error) {
-        setError('Error fetching games. Please try again later.');
+        console.error("Error fetching games:", error);
       } finally {
         setIsLoading(false);
       }
     };
 
-    loadData();
-  }, []);
+    loadGames();
+  }, [currentPage]);
 
-  const handleFetchGenres = (fetchedGenres) => {
-    setGenres(fetchedGenres);
-    setIsLoading(false);
-  };
-
-  const handleGenreClick = async (genre) => {
-    setSelectedGenre(genre);
-    setCurrentIndex(0);
-    console.log(`${genre} genre clicked`);
-    try {
-      const games = await fetchTopGames(genre);
-      setTopGames(games);
-    } catch (error) {
-      setError('Error fetching games by genre. Please try again later.');
+  const handleScroll = () => {
+    const { scrollTop, scrollHeight, clientHeight } = containerRef.current;
+    if (scrollTop + clientHeight >= scrollHeight - 50 && !isLoading) {
+      setCurrentPage((prev) => prev + 1);
     }
   };
 
-  const getVisibleGames = () => topGames.slice(currentIndex, currentIndex + 6);
+  useEffect(() => {
+    const container = containerRef.current;
+    container.addEventListener('scroll', handleScroll);
+    return () => {
+      container.removeEventListener('scroll', handleScroll);
+    };
+  }, [isLoading]);
 
-  const canShowNext = () => topGames.length > currentIndex + 6;
-  const canShowPrevious = () => currentIndex > 0;
+  useEffect(() => {
+    if (!isLoading && games.length > 0) {
+      gsap.fromTo(
+        containerRef.current.children,
+        { opacity: 0, y: 50 },
+        { opacity: 1, y: 0, stagger: 0.1 }
+      );
+    }
+  }, [games, isLoading]);
 
-  const handleNavigation = (direction) => {
-    setCurrentIndex(prev => {
-      const newIndex = direction === 'next' ? prev + 6 : prev - 6;
-      return Math.max(0, Math.min(newIndex, topGames.length - 6));
-    });
+  const handleGameClick = async (id) => {
+    setSelectedGameId(id);
+    const similarGamesData = await fetchSimilarGames(id);
+    setSimilarGames(similarGamesData);
   };
 
   return (
-    <div className="w-full h-auto flex flex-col items-center bg-gray-900 overflow-x-hidden">
-      <div className="mt-6 w-full flex items-center justify-center space-x-4">
-        <SearchBar />
-        <Genre onFetchGenres={handleFetchGenres} setIsLoading={setIsLoading} />
-      </div>
-
-      <div className="mt-4 w-full flex flex-col items-center">
-        {isLoading && <p className='text-white'>Loading genres...</p>}
-        {error && <p className='text-red-500'>{error}</p>}
-        {genres.length > 0 && (
-          <div className="flex flex-wrap justify-center mb-4">
-            {genres.map((genre, index) => (
-              <button
-                key={index}
-                className={`p-3 px-6 m-2 rounded-3xl font-semibold transition-colors duration-300
-                ${selectedGenre === genre ? 'bg-yellow-500 text-black' : 'bg-gray-700 hover:bg-gray-600 text-white'}`}
-                onClick={() => handleGenreClick(genre)}
-              >
-                {genre}
-              </button>
-            ))}
-          </div>
+    <div
+      ref={containerRef}
+      className="h-screen overflow-y-auto bg-gray-950 p-8 flex flex-col items-center"
+    >
+      <h2 className="text-4xl font-bold text-white mb-6">Top Games</h2>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 w-full">
+        {isLoading ? (
+          Array.from({ length: 15 }).map((_, index) => (
+            <SkeletonCard key={index} />
+          ))
+        ) : (
+          games.length > 0 ? (
+            games.map((game, index) => (
+              <div key={`${game.id}-${index}`} onClick={() => handleGameClick(game.id)}>
+                <GameCard
+                  id={game.id}
+                  title={game.name}
+                  imageUrl={game.background_image}
+                  rating={game.rating}
+                />
+              </div>
+            ))
+          ) : (
+            <div className="text-white">No games available.</div>
+          )
         )}
       </div>
 
-      {/* Top Games Section */}
-      <div className="relative w-full flex flex-col items-center mt-10">
-        <div className="relative w-full flex items-center">
-          {canShowPrevious() && (
-            <button
-              onClick={() => handleNavigation('prev')}
-              className="absolute left-6 p-3 bg-yellow-500 rounded-full hover:bg-yellow-600 text-white transition-transform duration-300 transform hover:scale-110"
-              style={{ zIndex: 10 }}
-            >
-              &lt;
-            </button>
-          )}
-          <div className="flex flex-nowrap overflow-hidden mx-12">
-            {getVisibleGames().map((game, index) => (
+      {/* Similar Games Section */}
+      {selectedGameId && similarGames.length > 0 && (
+        <div className="mt-8">
+          <h2 className="text-3xl md:text-4xl font-bold text-white mb-4 text-center">Similar Games</h2>
+          <div className="flex flex-wrap justify-center">
+            {similarGames.map((similarGame, index) => (
               <GameCard
-                key={index}
-                id={game.id}
-                title={game.name}
-                imageUrl={game.cover?.url || tempImg}
-                rating={game.rating}
-                className="mx-2 transition-transform duration-300 transform hover:scale-105"
+                key={`${similarGame.id}-${index}`}
+                id={similarGame.id}
+                title={similarGame.name}
+                imageUrl={similarGame.background_image}
+                rating={similarGame.rating}
               />
             ))}
           </div>
-          {canShowNext() && (
-            <button
-              onClick={() => handleNavigation('next')}
-              className="absolute right-6 p-3 bg-yellow-500 rounded-full hover:bg-yellow-600 text-white transition-transform duration-300 transform hover:scale-110"
-              style={{ zIndex: 10 }}
-            >
-              &gt;
-            </button>
-          )}
         </div>
-      </div>
+      )}
     </div>
   );
 };
 
-export default Game;
+export default GameDisplay;

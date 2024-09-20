@@ -1,61 +1,38 @@
-// gameApi.js
+// utilities/gameApi.js
 
-const CLIENT_ID = 'cnm977r5eoi0ilrpvcdkg6gvbxqilo';
-const CLIENT_SECRET = '8yfq7y65m5ig88vcljg13ov30opfkb';
-const BASE_URL = 'https://api.igdb.com/v4/';
+const API_KEY = 'c652890027b342ff92250dd8a3e57a15';
+const BASE_URL = 'https://api.rawg.io/api/';
+const PROXY_URL = 'https://thingproxy.freeboard.io/fetch/'; 
 
-// Function to get top games
-export const fetchTopGames = async () => {
-  const endpoint = 'games';
-  const requestBody = `fields name, rating; sort rating desc; limit 10;`;
-
+export const fetchGames = async (page) => {
   try {
-    const response = await fetch(`${BASE_URL}${endpoint}`, {
-      method: 'POST',
-      headers: {
-        'Client-ID': CLIENT_ID,
-        'Authorization': `Bearer ${CLIENT_SECRET}`,
-        'Content-Type': 'text/plain'
-      },
-      body: requestBody
-    });
-
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
-    }
-
+    const response = await fetch(`${PROXY_URL}${BASE_URL}games?key=${API_KEY}&ordering=-rating&page_size=10&page=${page}`);
     const data = await response.json();
-    return data;
+    return data.results;
   } catch (error) {
-    console.error('Error fetching top games:', error);
-    throw error;
+    console.error('Error fetching games:', error);
+    return [];
   }
 };
 
-// Function to get game details
-export const fetchGameDetails = async (gameId) => {
-  const endpoint = 'games';
-  const requestBody = `fields name, rating, summary, cover; where id = ${gameId};`;
-
+export const fetchGameDetails = async (id) => {
+  const response = await fetch(`${BASE_URL}/games/${id}?key=${API_KEY}`);
+  handleResponse(response);
+  return response.json();
+};
+const handleResponse = async (response) => {
+  if (!response.ok) {
+    throw new Error(`HTTP error! Status: ${response.status}`);
+  }
+  return response.json();
+};
+export const fetchSimilarGames = async (id) => {
   try {
-    const response = await fetch(`${BASE_URL}${endpoint}`, {
-      method: 'POST',
-      headers: {
-        'Client-ID': CLIENT_ID,
-        'Authorization': `Bearer ${CLIENT_SECRET}`,
-        'Content-Type': 'text/plain'
-      },
-      body: requestBody
-    });
-
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
-    }
-
-    const data = await response.json();
-    return data;
+    const response = await fetch(`${BASE_URL}/games/${id}/similar?key=${API_KEY}`);
+    const data = await handleResponse(response);
+    return data.results || [];
   } catch (error) {
-    console.error('Error fetching game details:', error);
-    throw error;
+    console.error("Error fetching similar games:", error);
+    return [];
   }
 };

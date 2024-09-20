@@ -14,7 +14,8 @@
 }
 
 /* Navbar Link Styles */
-.nav-link, .nav-link-mobile {
+.nav-link,
+.nav-link-mobile {
   color: #E2E8F0; /* Light gray color for nav links */
   text-decoration: none;
   padding: 0.5rem 1rem;
@@ -24,43 +25,7 @@
   transition: color 0.3s ease, transform 0.3s ease;
 }
 
-.nav-link::before, .nav-link-mobile::before {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: -100%;
-  width: 300%;
-  height: 300%;
-  background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.3) 50%, rgba(255,255,255,0) 100%);
-  transform: translateY(-50%) rotate(45deg);
-  transition: all 0.75s ease-in-out;
-}
-
-.nav-link:hover::before, .nav-link-mobile:hover::before {
-  left: 100%;
-}
-
-.nav-link:hover, .nav-link-mobile:hover {
-  color: #FBBF24; /* Change text color on hover */
-  transform: scale(1.1); /* Slightly enlarge the link */
-}
-
-/* Mobile Menu Styles */
-.mobile-nav {
-  display: none;
-}
-
-.nav-link-mobile {
-  color: #E2E8F0; /* Light gray color for mobile links */
-  text-decoration: none;
-  padding: 0.5rem 1rem;
-  border-bottom: 1px solid #4A5568;
-  width: 100%;
-  text-align: right;
-  position: relative;
-  overflow: hidden;
-}
-
+.nav-link::before,
 .nav-link-mobile::before {
   content: '';
   position: absolute;
@@ -68,22 +33,43 @@
   left: -100%;
   width: 300%;
   height: 300%;
-  background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.3) 50%, rgba(255,255,255,0) 100%);
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.3) 50%, rgba(255, 255, 255, 0) 100%);
   transform: translateY(-50%) rotate(45deg);
   transition: all 0.75s ease-in-out;
 }
 
+.nav-link:hover::before,
 .nav-link-mobile:hover::before {
   left: 100%;
 }
 
+.nav-link:hover,
 .nav-link-mobile:hover {
   color: #FBBF24; /* Change text color on hover */
+  transform: scale(1.05); /* Slightly scale up on hover */
+}
+
+/* Mobile Navigation Styles */
+.mobile-nav {
+  display: none; /* Hidden by default */
+  flex-direction: column; /* Stack items vertically */
+  position: absolute;
+  top: 100%; /* Position below the navbar */
+  right: 0;
+  background-color: #2D3748; /* Match navbar background */
+  border-radius: 0.5rem; /* Rounded corners */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* Subtle shadow */
+  z-index: 50;
+}
+
+.nav-link-mobile {
+  padding: 1rem; /* Increase padding for better touch targets */
+  border-bottom: 1px solid #4A5568; /* Divider */
 }
 
 /* Hamburger Menu Styles */
 .hamburger-menu {
-  display: none;
+  display: none; /* Hidden by default */
   font-size: 1.5rem;
   cursor: pointer;
   transition: color 0.3s ease;
@@ -93,16 +79,17 @@
   color: #FBBF24; /* Change color on hover */
 }
 
+/* Responsive Styles */
 @media screen and (max-width: 700px) {
   .menu {
-    display: none;
+    display: none; /* Hide desktop menu */
   }
 
   .hamburger-menu {
-    display: block;
+    display: block; /* Show hamburger menu */
   }
 
   .mobile-nav.active {
-    display: flex;
+    display: flex; /* Show mobile menu when active */
   }
 }
