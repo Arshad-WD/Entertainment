@@ -1,126 +1,117 @@
-
 // https://api.themoviedb.org/3/genre/movie/list?api_key=513f6d16a4509c1eb376c505e66ec61c
-import React from 'react';
+import React from "react";
 
 const genre = [
   {
     id: 28,
-    name: "Action"
+    name: "Action",
   },
   {
     id: 12,
-    name: "Adventure"
+    name: "Adventure",
   },
   {
     id: 16,
-    name: "Animation"
+    name: "Animation",
   },
   {
     id: 35,
-    name: "Comedy"
+    name: "Comedy",
   },
   {
     id: 80,
-    name: "Crime"
+    name: "Crime",
   },
   {
     id: 99,
-    name: "Documentary"
+    name: "Documentary",
   },
   {
     id: 18,
-    name: "Drama"
+    name: "Drama",
   },
   {
     id: 10751,
-    name: "Family"
+    name: "Family",
   },
   {
     id: 14,
-    name: "Fantasy"
+    name: "Fantasy",
   },
   {
     id: 36,
-    name: "History"
+    name: "History",
   },
   {
     id: 27,
-    name: "Horror"
+    name: "Horror",
   },
   {
     id: 10402,
-    name: "Music"
+    name: "Music",
   },
   {
     id: 9648,
-    name: "Mystery"
+    name: "Mystery",
   },
   {
     id: 10749,
-    name: "Romance"
+    name: "Romance",
   },
   {
     id: 878,
-    name: "Science Fiction"
+    name: "Science Fiction",
   },
   {
     id: 10770,
-    name: "TV Movie"
+    name: "TV Movie",
   },
   {
     id: 53,
-    name: "Thriller"
+    name: "Thriller",
   },
   {
     id: 10752,
-    name: "War"
+    name: "War",
   },
   {
     id: 37,
-    name: "Western"
-  }
+    name: "Western",
+  },
 ];
 const handleGenreClick = (id) => {
   const [selectedGenreIds, setSelectedGenreIds] = useState([]);
-    setSelectedGenreIds((prevIds) => [...prevIds, id]);
+  setSelectedGenreIds((prevIds) => [...prevIds, id]);
+};
 
-  };
-
-  
 function Genre({ onFetchGenres, setIsLoading }) {
-
-  
   const fetchGenres = async (setSelectedGenreIds) => {
     setIsLoading(true);
     try {
       const genreList = await new Promise((resolve) => {
         setTimeout(() => {
-          const updateGenres = genre.map(genre=> (genre.id , genre.name));
-          // const temp = genre.map(genre=> genre.id);
+          // const updateGenres = genre.map((genre) => (genre.id, genre.name));
+          // const temp = genre.m ap(genre=> genre.id);
           // console.log(temp)
-          
-          resolve(updateGenres);
+          resolve(genre);
           // onclick.updateGenres=setSelectedGenreIds((prevIds) => [...prevIds, updateGenres.id]);
         }, 1000);
       });
 
-      onFetchGenres(genreList); 
-      setIsLoading(false); 
-
+      onFetchGenres(genreList);
+      setIsLoading(false);
     } catch (error) {
-      console.error('Failed to fetch genres:', error);
-      setIsLoading(false); 
+      console.error("Failed to fetch genres:", error);
+      setIsLoading(false);
     }
   };
- 
-  
+
   return (
     <div>
-      <button 
-        className='bg-cyan-500 hover:shadow-xl before:shadow-2xl p-3 rounded-2xl outline-none text-black hover:font-bold hover:text-white'
-        onClick={fetchGenres} 
+      <button
+        className="bg-cyan-500 hover:shadow-xl before:shadow-2xl p-3 rounded-2xl outline-none text-black hover:font-bold hover:text-white"
+        onClick={fetchGenres}
       >
-  
         Genres →
       </button>
     </div>
