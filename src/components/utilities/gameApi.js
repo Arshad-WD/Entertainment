@@ -8,7 +8,8 @@ export const fetchGames = async (page) => {
   try {
     const response = await fetch(`${PROXY_URL}${BASE_URL}games?key=${API_KEY}&ordering=-rating&page_size=10&page=${page}`);
     const data = await response.json();
-    return data.results;
+    let result = data.results.filter(game=>game.id!=750429);
+    return result;
   } catch (error) {
     console.error('Error fetching games:', error);
     return [];

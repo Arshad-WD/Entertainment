@@ -10,6 +10,7 @@ import './index.css';
 import Game from './components/game';
 import GameDetail from './components/GameDetail';
 import Sign_in from './components/sign_in.jsx';
+import About from './components/About.jsx';
 
 // Component to conditionally render Navbar based on route
 const ConditionalNavbar = () => {
@@ -28,6 +29,7 @@ const App = () => (
 
         <Route path="/movie" element={<Movie />} />
         <Route path="/movie/:id" element={<MovieDetail />} />
+        <Route path="/about" element={<About />} />
         <Route path="/sign-in" element={<Sign_in/>}/>
         <Route path="*" element={<NotFound />} />
       </Routes>

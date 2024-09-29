@@ -1,13 +1,10 @@
 import React, { useEffect, useRef } from "react";
 import introvid from "../assets/introvid.mp4";
 import cinema from "../assets/cinema.mp4";
-import game from "../assets/game.mp4";
-import game1 from "../assets/game1.mp4";
-import game2 from "../assets/game2.mp4";
-import game3 from "../assets/game3.mp4";
 import { Link } from "react-router-dom";
-import { motion } from "framer-motion";
+import './TeamInfo.css'
 import "../index.css";
+import TeamInfo from "./TeamInfo";
 
 const Home = () => {
   const cursorRef = useRef(null);
@@ -20,17 +17,17 @@ const Home = () => {
         cursorRef.current.style.left = `${e.clientX}px`;
       }
 
-      if (cursorRayRef.current) {
-        const cursorX = e.clientX;
-        const cursorY = e.clientY;
-        const angle =
-          Math.atan2(
-            cursorY - window.innerHeight / 2,
-            cursorX - window.innerWidth / 2
-          ) *
-          (180 / Math.PI);
-        cursorRayRef.current.style.transform = `translate(-50%, -50%) rotate(${angle}deg)`;
-      }
+      // if (cursorRayRef.current) {
+      //   const cursorX = e.clientX;
+      //   const cursorY = e.clientY;
+      //   const angle =
+      //     Math.atan2(
+      //       cursorY - window.innerHeight / 2,
+      //       cursorX - window.innerWidth / 2
+      //     ) *
+      //     (180 / Math.PI);
+      //   cursorRayRef.current.style.transform = `translate(-50%, -50%) rotate(${angle}deg)`;
+      // }
     };
 
     document.addEventListener("mousemove", handleMouseMove);
@@ -42,8 +39,8 @@ const Home = () => {
       <div className="overflow-x-hidden bg-black">
         <div className="relative flex items-center justify-center h-screen mb-2 overflow-hidden bg-black">
           <nav className="absolute top-0 left-0 w-full z-50">
-            <div className="bg-opacity-50 bg-transparent text-white list-none flex justify-between items-center p-4 hover:bg-slate-800">
-              <h1 className="font-sans font-bold text-2xl hover:text-3xl">
+            <div className="bg-opacity-50 bg-transparent text-white list-none flex justify-between items-center hover:bg-slate-800">
+              <h1 className="font-sans font-bold text-2xl pl-14 hover:text-3xl">
                 LuxeVista
               </h1>
               <div className="flex space-x-8 m-5">
@@ -52,17 +49,34 @@ const Home = () => {
                   to="/movie"
                 >
                   <li>
-                    <h1>PRODUCT</h1>
+                    <h1>Movies</h1>
+                  </li>
+                </Link>
+                <Link
+                  className="p-4 border-2 border-red-900 rounded-md hover:text-xl "
+                  to="/game"
+                >
+                  <li>
+                  <h1>Games</h1>
+                  </li>
+                </Link>
+                <Link
+                  className="p-4 border-2 border-red-900 rounded-md hover:text-xl "
+                  to="/about"
+                >
+                  <li>
+                  <h1>About Us</h1>
                   </li>
                 </Link>
                 <Link
                   className="p-4 border-2 border-red-900 rounded-s-full hover:text-xl "
-                  to="/sign-in"
+                  to="/login"
                 >
                   <li>
-                    <h1>SIGN IN</h1>
+                    <h1>LOGIN</h1>
                   </li>
                 </Link>
+
                 <Link
                   className="p-4 border-2 border-red-900 rounded-r-full hover:text-xl "
                   to="/sign-in"
@@ -99,80 +113,80 @@ const Home = () => {
       </div>
 
       <div className="bg-black h-screen w-screen bg-opacity-10 p-20 pt-14 text-white relative">
-        <div className="absolute top-0 left-0 w-full h-16 overflow-hidden flex items-center bg-yellow-400">
+        <div className="absolute top-0 left-0 w-full h-16 overflow-hidden flex items-center bg-black/90">
           <div className="marquee-container w-full">
             <div className="marquee-text whitespace-nowrap animate-marquee">
               <span className="text-xl font-bold text-gradient">
-                - This is the work of a developer
+                😎 This is the work of a developer
               </span>
               <span className="text-xl font-bold text-gradient">
-                - This is the work of a developer
+                😎 This is the work of a developer
               </span>
               <span className="text-xl font-bold text-gradient">
-                - This is the work of a developer
+                😎 This is the work of a developer
               </span>
               <span className="text-xl font-bold text-gradient">
-                - This is the work of a developer
+                😎 This is the work of a developer
               </span>
               <span className="text-xl font-bold text-gradient">
-                - This is the work of a developer
+                😎 This is the work of a developer
               </span>
               <span className="text-xl font-bold text-gradient">
-                - This is the work of a developer
+                😎 This is the work of a developer
               </span>
               <span className="text-xl font-bold text-gradient">
-                - This is the work of a developer
+                😎 This is the work of a developer
               </span>
               <span className="text-xl font-bold text-gradient">
-                - This is the work of a developer
+                😎 This is the work of a developer
               </span>
               <span className="text-xl font-bold text-gradient">
-                - This is the work of a developer
+                😎 This is the work of a developer
               </span>
               <span className="text-xl font-bold text-gradient">
-                - This is the work of a developer
+                😎 This is the work of a developer
               </span>
               <span className="text-xl font-bold text-gradient">
-                - This is the work of a developer
+                😎 This is the work of a developer
               </span>
             </div>
           </div>
         </div>
-        <div className="absolute bottom-0 left-0 w-full h-20 overflow-hidden flex items-center bg-yellow-400">
+        <div className="absolute bottom-0 left-0 w-full h-20 overflow-hidden flex items-center bg-black/90">
           <div className="marquee-container w-full">
             <div className="marquee-text whitespace-nowrap animate-marquee-reverse">
               <span className="text-xl font-bold text-gradient">
-                - This is the work of a developer
+                😎 This is the work of a developer
               </span>
               <span className="text-xl font-bold text-gradient">
-                - This is the work of a developer
+                😎 This is the work of a developer
               </span>
               <span className="text-xl font-bold text-gradient">
-                - This is the work of a developer
+                😎 This is the work of a developer
               </span>
               <span className="text-xl font-bold text-gradient">
-                - This is the work of a developer
+                😎 This is the work of a developer
               </span>
               <span className="text-xl font-bold text-gradient">
-                - This is the work of a developer
+                😎 This is the work of a developer
               </span>
               <span className="text-xl font-bold text-gradient">
-                - This is the work of a developer
+                😎 This is the work of a developer
               </span>
               <span className="text-xl font-bold text-gradient">
-                - This is the work of a developer
+                😎 This is the work of a developer
               </span>
               <span className="text-xl font-bold text-gradient">
-                - This is the work of a developer
+                😎 This is the work of a developer
               </span>
               <span className="text-xl font-bold text-gradient">
-                - This is the work of a developer
+                😎 This is the work of a developer
               </span>
               <span className="text-xl font-bold text-gradient">
-                - This is the work of a developer
+                😎 This is the work of a developer
               </span>
               <span className="text-xl font-bold text-gradient">
-                - This is the work of a developer
+                😎 This is the work of a developer
               </span>
             </div>
           </div>
@@ -221,113 +235,6 @@ const Home = () => {
           </p>
         </div>
       </div>
-
-      <div className="flex bg-black h-[80vh] py-10">
-        <div className="flex flex-wrap w-full">
-          <div className="w-1/2 flex flex-col justify-between">
-            {/* Top-left video */}
-            <motion.div
-              className="flex justify-center"
-              animate={{ x: [-500, -15, -50], opacity: 1, scale: 1 }}
-              transition={{
-                duration: 6,
-                delay: 0.6,
-                ease: [0.5, 0.71, 0.8, 1.5],
-              }}
-              initial={{ opacity: 0, scale: 0.5 }}
-              whileHover={{ scale: 1.2 }}
-            >
-              <video
-                width="50%"
-                height="50%"
-                className="z-10 w-5/6 h-5/6"
-                autoPlay
-                loop
-                muted
-              >
-                <source src={game} type="video/mp4" />
-                Your browser does not support the video tag.
-              </video>
-            </motion.div>
-            {/* Bottom-left video */}
-            <motion.div
-              className="flex justify-center"
-              animate={{ x: [-500, -15, -50], opacity: 1, scale: 1 }}
-              transition={{
-                duration: 8,
-                delay: 0.6,
-                ease: [0.5, 0.71, 1, 1.5],
-              }}
-              initial={{ opacity: 0, scale: 0.5 }}
-              whileHover={{ scale: 1.2 }}
-            >
-              <video
-                width="50%"
-                height="50%"
-                className="z-10 w-5/6 h-5/6"
-                autoPlay
-                loop
-                muted
-              >
-                <source src={game1} type="video/mp4" />
-                Your browser does not support the video tag.
-              </video>
-            </motion.div>
-          </div>
-          <div className="w-1/2 flex flex-col justify-between">
-            {/* Top-right video */}
-            <motion.div
-              className="flex justify-center"
-              animate={{ x: [500, -15, -50], opacity: 1, scale: 1 }}
-              transition={{
-                duration: 6,
-                delay: 1,
-                ease: [0.5, 0.71, 1, 1.5],
-              }}
-              initial={{ opacity: 0, scale: 0.5 }}
-              whileHover={{ scale: 1.2 }}
-            >
-              <video
-                width="50%"
-                height="50%"
-                className="z-10 w-5/6 h-5/6"
-                autoPlay
-                loop
-                muted
-              >
-                <source src={game2} type="video/mp4" />
-                Your browser does not support the video tag.
-              </video>
-            </motion.div>
-            {/* Bottom-right video */}
-            <motion.div
-              className="flex justify-center"
-              animate={{ x: [500, -15, -50], opacity: 1, scale: 1 }}
-              transition={{
-                duration: 8,
-                delay: 1,
-                ease: [0.5, 0.71, 1, 1.5],
-              }}
-              initial={{ opacity: 0, scale: 0.5 }}
-              whileHover={{ scale: 1.2 }}
-            >
-              <video
-                width="50%"
-                height="50%"
-                className="z-10 w-5/6 h-5/6"
-                autoPlay
-                loop
-                muted
-              >
-                <source src={game3} type="video/mp4" />
-                Your browser does not support the video tag.
-              </video>
-            </motion.div>
-          </div>
-        </div>
-      </div>
-
-      {/* Cursor elements */}
       <div
         ref={cursorRef}
         className="cursor fixed top-0 left-0 w-10 h-10 bg-white rounded-full pointer-events-none z-50"

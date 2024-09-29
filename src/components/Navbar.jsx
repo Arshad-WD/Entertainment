@@ -64,6 +64,7 @@ const Navbar = () => {
         <Link to="/" className='nav-link'>HOME</Link>
         <Link to="/movie" className='nav-link'>MOVIE</Link>
         <Link to="/game" className='nav-link'>GAME</Link>
+        <Link to="/about" className='nav-link'>About</Link>
       </nav>
 
       <div className='auth-links hidden lg:flex items-center'>
