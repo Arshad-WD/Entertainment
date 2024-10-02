@@ -2,9 +2,7 @@ import React, { useEffect, useRef } from "react";
 import introvid from "../assets/introvid.mp4";
 import cinema from "../assets/cinema.mp4";
 import { Link } from "react-router-dom";
-import './TeamInfo.css'
 import "../index.css";
-import TeamInfo from "./TeamInfo";
 
 const Home = () => {
   const cursorRef = useRef(null);

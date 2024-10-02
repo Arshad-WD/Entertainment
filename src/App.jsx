@@ -1,18 +1,19 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
-import Home from './components/Home';         // Ensure correct case in filename and path
-import Movie from './components/movie';       // Correct case for Movie component
-import MovieDetail from './components/MovieDetail'; // Detail page for individual movie
-import NotFound from './components/NotFound'; // 404 page
-import ErrorBoundary from './components/ErrorBoundary'; // Error boundary for handling errors
+import Home from './components/Home';        
+import Movie from './components/movie';      
+import MovieDetail from './components/MovieDetail'; 
+import NotFound from './components/NotFound';
+import ErrorBoundary from './components/ErrorBoundary';
 import Navbar from './components/Navbar';
 import './index.css';
 import Game from './components/game';
 import GameDetail from './components/GameDetail';
 import Sign_in from './components/sign_in.jsx';
 import About from './components/About.jsx';
+import Login from './components/Login.jsx'
+import Settings from './components/setting.jsx';
 
-// Component to conditionally render Navbar based on route
 const ConditionalNavbar = () => {
   const location = useLocation();
   return location.pathname !== '/' ? <Navbar /> : null;
@@ -30,7 +31,9 @@ const App = () => (
         <Route path="/movie" element={<Movie />} />
         <Route path="/movie/:id" element={<MovieDetail />} />
         <Route path="/about" element={<About />} />
+        <Route path="/login" element={<Login />} />
         <Route path="/sign-in" element={<Sign_in/>}/>
+        <Route path="/settings" element={<Settings/>}/>
         <Route path="*" element={<NotFound />} />
       </Routes>
     </ErrorBoundary>

@@ -40,7 +40,7 @@ const Navbar = () => {
 
   const handleLogout = () => {
     setIsLoggedIn(false);
-    navigate('/sign-in');
+    navigate('/login');
   };
 
   return (
@@ -74,7 +74,7 @@ const Navbar = () => {
               <img src={tempImg} alt="Profile" className="w-10 h-10 rounded-full" />
             </button>
             {isProfileMenuOpen && (
-              <div className="absolute right-0 mt-2 bg-gray-800 text-white rounded shadow-lg p-2 flex flex-col animate-fade-in">
+              <div className="absolute right-0 mt-4 bg-gray-800 text-white rounded shadow-lg p-2 flex flex-col animate-fade-in">
                 <Link to="/settings" className="px-4 py-2 hover:bg-gray-700">Settings</Link>
                 <Link to="/prime" className="px-4 py-2 hover:bg-gray-700">Prime Member</Link>
                 <button onClick={handleLogout} className="px-4 py-2 hover:bg-gray-700">Logout</button>
@@ -83,7 +83,7 @@ const Navbar = () => {
           </div>
         ) : (
           <>
-            <Link to="/sign-in" className='nav-link' onClick={handleLogin}>LOGIN</Link>
+            <Link to="/login" className='nav-link' onClick={handleLogin}>LOGIN</Link>
             <div className="mx-2" /> 
             <Link to="/sign-in" className='nav-link' onClick={handleLogin}>SIGN IN</Link>
           </>
@@ -107,7 +107,7 @@ const Navbar = () => {
               </div>
             )}
           </div>
-          <Link to="/sign-in" className='nav-link-mobile' onClick={handleLogin}>LOGIN</Link>
+          <Link to="/login" className='nav-link-mobile' onClick={handleLogin}>LOGIN</Link>
           <Link to="/sign-in" className='nav-link-mobile' onClick={handleLogin}>SIGN IN</Link>
         </div>
       )}

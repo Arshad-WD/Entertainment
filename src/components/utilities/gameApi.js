@@ -17,7 +17,7 @@ export const fetchGames = async (page) => {
 };
 
 export const fetchGameDetails = async (id) => {
-  const response = await fetch(`${BASE_URL}/games/${id}?key=${API_KEY}`);
+  const response = await fetch(`${BASE_URL}games/${id}?key=${API_KEY}`);
   handleResponse(response);
   return response.json();
 };
@@ -29,7 +29,7 @@ const handleResponse = async (response) => {
 };
 export const fetchSimilarGames = async (id) => {
   try {
-    const response = await fetch(`${BASE_URL}/games/${id}/similar?key=${API_KEY}`);
+    const response = await fetch(`${BASE_URL}games/${id}/suggested?key=${API_KEY}`);
     const data = await handleResponse(response);
     return data.results || [];
   } catch (error) {
