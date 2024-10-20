@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import GameCard from './gameCard'; // Updated GameCard component
 import SkeletonCard from './skeletonCard'; // Updated SkeletonCard component
-import { fetchGames, fetchSimilarGames  } from './utilities/gameApi'; // Ensure fetchSimilarGames is imported
+import { fetchGames, fetchSimilarGames } from './utilities/gameApi'; // Ensure fetchSimilarGames is imported
 
 const GameDisplay = () => {
   const [games, setGames] = useState([]);
@@ -11,13 +11,22 @@ const GameDisplay = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedGameId, setSelectedGameId] = useState(null);
   const containerRef = useRef(null);
+  const fetchedGameIds = useRef(new Set()); // Set to track fetched game IDs
 
   useEffect(() => {
     const loadGames = async () => {
       setIsLoading(true);
       try {
         const gamesData = await fetchGames(currentPage);
-        setGames((prev) => [...prev, ...gamesData]);
+        
+        // Filter out duplicates
+        const newGames = gamesData.filter(game => !fetchedGameIds.current.has(game.id));
+        
+        // Add new game IDs to the set
+        newGames.forEach(game => fetchedGameIds.current.add(game.id));
+
+        // Update the state with new games
+        setGames((prev) => [...prev, ...newGames]);
       } catch (error) {
         console.error("Error fetching games:", error);
       } finally {
@@ -65,7 +74,7 @@ const GameDisplay = () => {
       className="h-screen overflow-y-auto bg-gray-950 p-8 flex flex-col items-center"
     >
       <h2 className="text-4xl font-bold text-white mb-6">Top Games</h2>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 w-full">
+      <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-6 w-full">
         {isLoading ? (
           Array.from({ length: 15 }).map((_, index) => (
             <SkeletonCard key={index} />
@@ -79,6 +88,7 @@ const GameDisplay = () => {
                   title={game.name}
                   imageUrl={game.background_image}
                   rating={game.rating}
+                  platforms={game.parent_platforms?.map(platform => platform.platform.name)} // Correctly pass platforms from game
                 />
               </div>
             ))
@@ -100,6 +110,7 @@ const GameDisplay = () => {
                 title={similarGame.name}
                 imageUrl={similarGame.background_image}
                 rating={similarGame.rating}
+                platforms={similarGame.parent_platforms?.map(platform => platform.platform.name)} // Pass platforms correctly
               />
             ))}
           </div>
