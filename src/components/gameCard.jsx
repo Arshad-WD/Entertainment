@@ -1,14 +1,13 @@
-// GameCard.jsx
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { FaStar } from 'react-icons/fa';
 import tempImg from '../assets/temperory.jpeg'; 
 import './game.css'
 
-const GameCard = ({ id, title, imageUrl, rating }) => {
+const GameCard = ({ id, title, imageUrl, rating, platforms }) => {
   return (
     <Link to={`/game/${id}`} className="no-underline">
-      <div className="bg-gray-900 p-4 rounded-lg shadow-md overflow-hidden game-card-hover" style={{ width: '220px', height: '340px' }}>
+      <div className="bg-gray-900 p-4 rounded-lg shadow-md overflow-hidden game-card-hover" style={{ width: '240px', height: '420px' }}>
         <div className="relative w-full" style={{ height: '60%' }}>
           <img
             src={imageUrl || tempImg}
@@ -20,11 +19,11 @@ const GameCard = ({ id, title, imageUrl, rating }) => {
           <h3 className="text-white text-md font-semibold truncate" style={{ height: '40px', overflow: 'hidden' }}>
             {title}
           </h3>
-          <p className="text-gray-400 mt-1" style={{ height: '40px', overflow: 'hidden' }}>
-            Description goes here
+          <p className="text-gray-400 " style={{ height: '44px', overflow: 'hidden' }}>
+            Platforms: {platforms?.join(', ') || 'N/A'}
           </p>
           <div className="flex justify-between items-center mt-2">
-            <span className="text-green-400 font-bold" style={{ fontSize: '14px' }}>
+            <span className="text-green-400 font-bold" style={{ fontSize: '16px' }}>
               {rating}
             </span>
             <button
