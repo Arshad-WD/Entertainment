@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { fetchGameDetails, fetchSimilarGames } from '../components/utilities/gameApi';
 import tempImg from '../assets/temperory.jpeg';
 import { FaArrowLeft } from 'react-icons/fa6';
-import GameCard from './gameCard'; // Ensure the import path is correct
+import GameCard from './gameCard';
 
 const GameDetail = () => {
   const { id } = useParams();
@@ -19,9 +19,10 @@ const GameDetail = () => {
         setLoading(true);
         const gameData = await fetchGameDetails(id);
         setGame(gameData); // Assuming the API returns a single game object
-        const similarGamesData = await fetchSimilarGames(id);
+        const similarGamesData = await fetchSimilarGames(id); // Assuming this fetches by genre
         setSimilarGames(similarGamesData);
       } catch (error) {
+        console.error('Error loading game data:', error); // Log error for debugging
         setError(error.message || "Failed to load game data");
       } finally {
         setLoading(false);
@@ -62,32 +63,36 @@ const GameDetail = () => {
 
       <div className="flex flex-col md:flex-row w-full mt-10 bg-gray-800 rounded-lg shadow-lg p-4">
         <img
-          src={game.cover?.url || tempImg}
+          src={game.background_image || tempImg}
           alt={game.name}
           className="w-full md:w-4/12 h-auto rounded-lg shadow-lg object-cover"
         />
         <div className="ml-0 md:ml-6 mt-4 md:mt-0 w-full md:w-8/12">
           <h1 className="text-3xl md:text-4xl font-bold text-white">{game.name}</h1>
           <p className="text-lg text-gray-400 mt-2">Rating: {game.rating || 'N/A'}</p>
-          <p className="text-lg text-gray-400 mt-2">Release Date: {game.release_date || 'N/A'}</p>
+          <p className="text-lg text-gray-400 mt-2">Release Date: {game.released || 'N/A'}</p>
           <p className="text-lg text-gray-400 mt-2">
-            Platforms: {game.platforms?.map(platform => platform.name).join(', ') || 'N/A'}
+            Platforms: {game.parent_platforms?.map(platform => platform.platform.name).join(', ') || 'N/A'}
           </p>
+          <p className="text-lg text-gray-400 mt-2">
+            Genres: {game.genres?.map(genre => genre.name).join(', ') || 'N/A'}
+          </p>
+          <p className="text-lg text-gray-400 mt-2">Suggestions Count: {game.suggestions_count || 'N/A'}</p>
           <p className="text-gray-300 mt-4 text-xl">{game.summary || 'No description available'}</p>
         </div>
       </div>
 
       {/* Similar Games Section */}
       <div className="w-full mt-8">
-        <h2 className="text-3xl md:text-4xl font-bold text-white mb-4 text-center">Similar Games</h2>
+        <h2 className="text-3xl md:text-4xl font-bold text-white mb-6 text-center">Similar Games</h2>
         <div className="flex flex-wrap justify-center">
           {similarGames.length > 0 ? (
             similarGames.map(similarGame => (
               <GameCard
                 key={similarGame.id}
-                id={similarGame.id} // Pass the ID for routing
+                id={similarGame.id}
                 title={similarGame.name}
-                imageUrl={similarGame.cover?.url || tempImg}
+                imageUrl={similarGame.background_image || tempImg}
                 rating={similarGame.rating || 'N/A'}
               />
             ))
