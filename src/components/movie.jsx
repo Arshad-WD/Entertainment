@@ -11,14 +11,17 @@ import {
   fetchAnimeMovies,
   fetchOtherMovies,
   fetchMovieByName,
-} from "./utilities/api";
+  fetchLanguages,
+} from "./utilities/api"; // Make sure to include fetchLanguages in your API utilities
 import "../components/responsive.css";
 import tempImg from "../assets/temperory.jpeg";
 
 const Movie = () => {
   const [genres, setGenres] = useState([]);
+  const [languages, setLanguages] = useState([]); // State for languages
   const [isLoading, setIsLoading] = useState(false);
   const [selectedGenre, setSelectedGenre] = useState(null);
+  const [selectedLanguage, setSelectedLanguage] = useState("en-US"); // Default language
   const [currentIndex, setCurrentIndex] = useState({
     topMovies: 0,
     topSeries: 0,
@@ -29,16 +32,16 @@ const Movie = () => {
   const [topSeries, setTopSeries] = useState([]);
   const [animeMovies, setAnimeMovies] = useState([]);
   const [otherMovies, setOtherMovies] = useState([]);
-  const [value, setValue] = useState(""); // Saif
+  const [value, setValue] = useState(""); // For search functionality
 
   useEffect(() => {
     const loadData = async () => {
       setIsLoading(true);
       const [movies, series, animes, others] = await Promise.all([
-        fetchTopMovies(),
-        fetchTopSeries(),
-        fetchAnimeMovies(),
-        fetchOtherMovies(),
+        fetchTopMovies(selectedLanguage),
+        fetchTopSeries(selectedLanguage),
+        fetchAnimeMovies(selectedLanguage),
+        fetchOtherMovies(selectedLanguage),
       ]);
       setTopMovies(movies);
       setTopSeries(series);
@@ -48,29 +51,37 @@ const Movie = () => {
     };
 
     loadData();
+  }, [selectedLanguage]); // Re-fetch data when language changes
+
+  // Fetch available languages
+  useEffect(() => {
+    const loadLanguages = async () => {
+      const langData = await fetchLanguages();
+      setLanguages(langData);
+    };
+
+    loadLanguages();
   }, []);
 
-  // Saif
+  // Search functionality
   useEffect(() => {
     if (value) {
       fetchMovieByName(value).then(setTopMovies);
     } else {
-      fetchTopMovies().then(setTopMovies);
+      fetchTopMovies(selectedLanguage).then(setTopMovies);
     }
-  }, [value]);
+  }, [value, selectedLanguage]);
 
   const handleFetchGenres = (fetchedGenres) => {
     setGenres(fetchedGenres);
     setIsLoading(false);
   };
 
-  // Saif
   const handleGenreClick = async (genre) => {
     setSelectedGenre(genre);
     setCurrentIndex((prev) => ({ ...prev, topMovies: 0 }));
-    console.log(`${genre.name} genre clicked`);
     const genreId = genre.id;
-    const movies = await fetchMoviesByGenre(genreId);
+    const movies = await fetchMoviesByGenre(genreId, selectedLanguage);
     setTopMovies(movies);
   };
 
@@ -163,6 +174,18 @@ const Movie = () => {
       <div className="mt-6 top-10 w-full flex items-center justify-center space-x-4">
         <SearchBar value={value} setValue={setValue} />
         <Genre onFetchGenres={handleFetchGenres} setIsLoading={setIsLoading} />
+        {/* Language Dropdown */}
+        <select
+          value={selectedLanguage}
+          onChange={(e) => setSelectedLanguage(e.target.value)}
+          className="bg-gray-700 text-white p-2 rounded-md"
+        >
+          {languages.map((lang) => (
+            <option key={lang.iso_639_1} value={lang.iso_639_1}>
+              {lang.english_name}
+            </option>
+          ))}
+        </select>
       </div>
 
       <div className="mt-4 ml-32 mr-32 w-full flex flex-col items-center p-10">
@@ -201,7 +224,7 @@ const Movie = () => {
               <IoIosArrowDropleft size={24} color="white" />
             </button>
           )}
-          {isLoading ? (
+          {isLoading || topMovies.length === 0 ? (
             renderSkeletons()
           ) : (
             <div className="flex flex-nowrap overflow-hidden mx-10">
@@ -236,164 +259,146 @@ const Movie = () => {
       </div>
 
       {/* Top Series Section */}
-      <div className="Card-container w-screen h-5/6 bg-gray-800 mt-10">
-        <div className="TopMovieWeek px-4 py-2 text-left text-white flex items-center">
-          <h2 className="mr-4 font-semibold">Top Series Of The Week</h2>
-          <div className="flex-grow border-t border-gray-600"></div>
-        </div>
-        <div className="relative w-full flex flex-col items-center">
-          <div className="relative w-full flex items-center">
-            {canShowPrevious("topSeries") && (
-              <button
-                onClick={() => handleNavigation("topSeries", "prev")}
-                className={`absolute left-6 p-1 bg-gray-600 rounded-md h-28 hover:bg-gray-700 ${
-                  canShowPrevious("topSeries") ? "opacity-100" : "opacity-0"
-                }`}
-                style={{ zIndex: 10 }}
-              >
-                <IoIosArrowDropleft size={24} color="white" />
-              </button>
-            )}
-            {isLoading ? (
-              renderSkeletons()
-            ) : (
-              <div className="flex flex-nowrap overflow-hidden mx-12">
-                {getVisibleMovies("topSeries").map((series, index) => (
-                  <MovieCard
-                    key={index}
-                    id={series.id}
-                    title={series.name}
-                    imageUrl={
-                      series.poster_path
-                        ? `https://image.tmdb.org/t/p/w200${series.poster_path}`
-                        : tempImg
-                    }
-                    rating={series.vote_average}
-                    className="mx-2"
-                  />
-                ))}
-              </div>
-            )}
-            {canShowNext("topSeries") && (
-              <button
-                onClick={() => handleNavigation("topSeries", "next")}
-                className={`absolute right-6 p-1 bg-gray-600 rounded-md h-28 hover:bg-gray-700 ${
-                  canShowNext("topSeries") ? "opacity-100" : "opacity-0"
-                }`}
-                style={{ zIndex: 10 }}
-              >
-                <IoIosArrowDropright size={24} color="white" />
-              </button>
-            )}
-          </div>
+      <div className="relative w-full flex flex-col items-center mt-10">
+        <div className="relative w-full flex items-center">
+          {canShowPrevious("topSeries") && (
+            <button
+              onClick={() => handleNavigation("topSeries", "prev")}
+              className={`absolute left-4 p-1 bg-gray-600 rounded-md h-28 hover:bg-gray-700 ${
+                canShowPrevious("topSeries") ? "opacity-100" : "opacity-0"
+              }`}
+              style={{ zIndex: 10 }}
+            >
+              <IoIosArrowDropleft size={24} color="white" />
+            </button>
+          )}
+          {isLoading || topSeries.length === 0 ? (
+            renderSkeletons()
+          ) : (
+            <div className="flex flex-nowrap overflow-hidden mx-10">
+              {getVisibleMovies("topSeries").map((series, index) => (
+                <MovieCard
+                  key={index}
+                  id={series.id}
+                  title={series.name}
+                  imageUrl={
+                    series.poster_path
+                      ? `https://image.tmdb.org/t/p/w200${series.poster_path}`
+                      : tempImg
+                  }
+                  rating={series.vote_average}
+                  className="mx-2"
+                />
+              ))}
+            </div>
+          )}
+          {canShowNext("topSeries") && (
+            <button
+              onClick={() => handleNavigation("topSeries", "next")}
+              className={`absolute right-6 p-1 bg-gray-600 rounded-md h-28 hover:bg-gray-700 ${
+                canShowNext("topSeries") ? "opacity-100" : "opacity-0"
+              }`}
+              style={{ zIndex: 10 }}
+            >
+              <IoIosArrowDropright size={24} color="white" />
+            </button>
+          )}
         </div>
       </div>
 
       {/* Anime Movies Section */}
-      <div className="Card-container w-screen h-5/6 bg-gray-800 mt-10">
-        <div className="TopMovieWeek px-4 py-2 text-left text-white flex items-center">
-          <h2 className="mr-4 font-semibold">Anime Movies</h2>
-          <div className="flex-grow border-t border-gray-600"></div>
-        </div>
-        <div className="relative w-full flex flex-col items-center">
-          <div className="relative w-full flex items-center">
-            {canShowPrevious("animeMovies") && (
-              <button
-                onClick={() => handleNavigation("animeMovies", "prev")}
-                className={`absolute left-6 p-1 bg-gray-600 rounded-md h-28 hover:bg-gray-700 ${
-                  canShowPrevious("animeMovies") ? "opacity-100" : "opacity-0"
-                }`}
-                style={{ zIndex: 10 }}
-              >
-                <IoIosArrowDropleft size={24} color="white" />
-              </button>
-            )}
-            {isLoading ? (
-              renderSkeletons()
-            ) : (
-              <div className="flex flex-nowrap overflow-hidden mx-12">
-                {getVisibleMovies("animeMovies").map((anime, index) => (
-                  <MovieCard
-                    key={index}
-                    id={anime.id}
-                    title={anime.title}
-                    imageUrl={
-                      anime.poster_path
-                        ? `https://image.tmdb.org/t/p/w200${anime.poster_path}`
-                        : tempImg
-                    }
-                    rating={anime.vote_average}
-                    className="mx-2"
-                  />
-                ))}
-              </div>
-            )}
-            {canShowNext("animeMovies") && (
-              <button
-                onClick={() => handleNavigation("animeMovies", "next")}
-                className={`absolute right-6 p-1 bg-gray-600 rounded-md h-28 hover:bg-gray-700 ${
-                  canShowNext("animeMovies") ? "opacity-100" : "opacity-0"
-                }`}
-                style={{ zIndex: 10 }}
-              >
-                <IoIosArrowDropright size={24} color="white" />
-              </button>
-            )}
-          </div>
+      <div className="relative w-full flex flex-col items-center mt-10">
+        <div className="relative w-full flex items-center">
+          {canShowPrevious("animeMovies") && (
+            <button
+              onClick={() => handleNavigation("animeMovies", "prev")}
+              className={`absolute left-4 p-1 bg-gray-600 rounded-md h-28 hover:bg-gray-700 ${
+                canShowPrevious("animeMovies") ? "opacity-100" : "opacity-0"
+              }`}
+              style={{ zIndex: 10 }}
+            >
+              <IoIosArrowDropleft size={24} color="white" />
+            </button>
+          )}
+          {isLoading || animeMovies.length === 0 ? (
+            renderSkeletons()
+          ) : (
+            <div className="flex flex-nowrap overflow-hidden mx-10">
+              {getVisibleMovies("animeMovies").map((anime, index) => (
+                <MovieCard
+                  key={index}
+                  id={anime.id}
+                  title={anime.title}
+                  imageUrl={
+                    anime.poster_path
+                      ? `https://image.tmdb.org/t/p/w200${anime.poster_path}`
+                      : tempImg
+                  }
+                  rating={anime.vote_average}
+                  className="mx-2"
+                />
+              ))}
+            </div>
+          )}
+          {canShowNext("animeMovies") && (
+            <button
+              onClick={() => handleNavigation("animeMovies", "next")}
+              className={`absolute right-6 p-1 bg-gray-600 rounded-md h-28 hover:bg-gray-700 ${
+                canShowNext("animeMovies") ? "opacity-100" : "opacity-0"
+              }`}
+              style={{ zIndex: 10 }}
+            >
+              <IoIosArrowDropright size={24} color="white" />
+            </button>
+          )}
         </div>
       </div>
 
       {/* Other Movies Section */}
-      <div className="Card-container w-screen h-5/6 bg-gray-800 mt-10">
-        <div className="TopMovieWeek px-4 py-2 text-left text-white flex items-center">
-          <h2 className="mr-4 font-semibold">Other Movies</h2>
-          <div className="flex-grow border-t border-gray-600"></div>
-        </div>
-        <div className="relative w-full flex flex-col items-center">
-          <div className="relative w-full flex items-center">
-            {canShowPrevious("otherMovies") && (
-              <button
-                onClick={() => handleNavigation("otherMovies", "prev")}
-                className={`absolute left-6 p-1 bg-gray-600 rounded-md h-28 hover:bg-gray-700 ${
-                  canShowPrevious("otherMovies") ? "opacity-100" : "opacity-0"
-                }`}
-                style={{ zIndex: 10 }}
-              >
-                <IoIosArrowDropleft size={24} color="white" />
-              </button>
-            )}
-            {isLoading ? (
-              renderSkeletons()
-            ) : (
-              <div className="flex flex-nowrap overflow-hidden mx-12">
-                {getVisibleMovies("otherMovies").map((other, index) => (
-                  <MovieCard
-                    key={index}
-                    id={other.id}
-                    title={other.title}
-                    imageUrl={
-                      other.poster_path
-                        ? `https://image.tmdb.org/t/p/w200${other.poster_path}`
-                        : tempImg
-                    }
-                    rating={other.vote_average}
-                    className="mx-2"
-                  />
-                ))}
-              </div>
-            )}
-            {canShowNext("otherMovies") && (
-              <button
-                onClick={() => handleNavigation("otherMovies", "next")}
-                className={`absolute right-6 p-1 bg-gray-600 rounded-md h-28 hover:bg-gray-700 ${
-                  canShowNext("otherMovies") ? "opacity-100" : "opacity-0"
-                }`}
-                style={{ zIndex: 10 }}
-              >
-                <IoIosArrowDropright size={24} color="white" />
-              </button>
-            )}
-          </div>
+      <div className="relative w-full flex flex-col items-center mt-10">
+        <div className="relative w-full flex items-center">
+          {canShowPrevious("otherMovies") && (
+            <button
+              onClick={() => handleNavigation("otherMovies", "prev")}
+              className={`absolute left-4 p-1 bg-gray-600 rounded-md h-28 hover:bg-gray-700 ${
+                canShowPrevious("otherMovies") ? "opacity-100" : "opacity-0"
+              }`}
+              style={{ zIndex: 10 }}
+            >
+              <IoIosArrowDropleft size={24} color="white" />
+            </button>
+          )}
+          {isLoading || otherMovies.length === 0 ? (
+            renderSkeletons()
+          ) : (
+            <div className="flex flex-nowrap overflow-hidden mx-10">
+              {getVisibleMovies("otherMovies").map((movie, index) => (
+                <MovieCard
+                  key={index}
+                  id={movie.id}
+                  title={movie.title}
+                  imageUrl={
+                    movie.poster_path
+                      ? `https://image.tmdb.org/t/p/w200${movie.poster_path}`
+                      : tempImg
+                  }
+                  rating={movie.vote_average}
+                  className="mx-2"
+                />
+              ))}
+            </div>
+          )}
+          {canShowNext("otherMovies") && (
+            <button
+              onClick={() => handleNavigation("otherMovies", "next")}
+              className={`absolute right-6 p-1 bg-gray-600 rounded-md h-28 hover:bg-gray-700 ${
+                canShowNext("otherMovies") ? "opacity-100" : "opacity-0"
+              }`}
+              style={{ zIndex: 10 }}
+            >
+              <IoIosArrowDropright size={24} color="white" />
+            </button>
+          )}
         </div>
       </div>
     </div>

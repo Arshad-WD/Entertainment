@@ -74,7 +74,11 @@ const GameDisplay = () => {
       className="h-screen overflow-y-auto bg-gray-950 p-8 flex flex-col items-center"
     >
       <h2 className="text-4xl font-bold text-white mb-6">Top Games</h2>
+<<<<<<< HEAD
       <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-6 w-full">
+=======
+      <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-6 w-full">
+>>>>>>> 39a6dea (final commit)
         {isLoading ? (
           Array.from({ length: 15 }).map((_, index) => (
             <SkeletonCard key={index} />

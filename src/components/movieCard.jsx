@@ -8,8 +8,8 @@ const MovieCard = ({ id, title, imageUrl, rating }) => {
   return (
     <Link to={`/movie/${id}`} className="no-underline">
       <div
-        className="bg-gray-900 p-4 m-4 rounded-lg shadow-lg"
-        style={{ width: "200px", height: "320px" }}
+        className="bg-gray-900 p-4 m-6 rounded-lg shadow-lg"
+        style={{ width: "220px", height: "320px" }}
       >
         <div className="relative w-full" style={{ height: "60%" }}>
           <img

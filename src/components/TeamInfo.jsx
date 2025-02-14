@@ -56,7 +56,7 @@ function TeamInfo() {
           <div className='work_info'>
             <div className='work_left-bl'>
               <span className='work_num'>03</span>
-              <h2 className='title'>Arshad Chaudhary<span className='stroke'>Frontedn and Backend</span></h2>
+              <h2 className='title'>Arshad Chaudhary<span className='stroke'>Frontend and Backend</span></h2>
               <button className='work_link' onClick={() => alert('View More clicked!')}>View More</button>
             </div>
           </div>

@@ -24,7 +24,7 @@ const MovieDetail = () => {
         ]);
         setMovie(movieData);
         setCharacters(characterData);
-        console.log(movieData);
+        // console.log(movieData);
       } catch (error) {
         setError("Failed to load movie data");
       }
@@ -59,52 +59,49 @@ const MovieDetail = () => {
           >
             <FaArrowLeft className="text-white" size={24} />
           </button>
-          <div className="flex w-full mt-8">
-            <img
-              src={
-                movie.poster_path
-                  ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
-                  : tempImg
-              }
-              alt={movie.title}
-              className="w-3/12 h-auto rounded-lg ml-20 mr-10"
-            />
-            <div className="ml-4 w-2/3">
-              <h1 className="text-2xl font-bold text-white">{movie.title}</h1>
-              <p className="text-lg text-gray-400 mt-2">
-                Genre:{" "}
-                {movie.genres?.map((genre) => genre.name).join(", ") || "N/A"}
-              </p>
-              <p className="text-lg text-gray-400 mt-2">
-                Rating: {movie.vote_average || "N/A"}
-              </p>
-              <p className="text-lg text-gray-400 mt-2">
-                Languages:{" "}
-                {movie.spoken_languages?.map((lang) => lang.name).join(", ") ||
-                  "N/A"}
-              </p>
-              <p className="text-lg text-gray-400 mt-2">
-                Country:{" "}
-                {movie.production_countries
-                  ?.map((country) => country.name)
-                  .join(", ") || "N/A"}
-              </p>
-              <p className="text-lg text-gray-400 mt-2">
-                Director:{" "}
-                {movie.credits?.crew.find((person) => person.job === "Director")
-                  ?.name || "N/A"}
-              </p>
-              <p className="text-gray-300 mt-4 text-xl">
-                {movie.overview || "No description available"}
-              </p>
-              <button
-                className="my-10 bg-green-500 px-2 py-3 rounded-md text-white"
-                onClick={getRecommendation}
-              >
-                Get Recommendation from this movie
-              </button>
-            </div>
-          </div>
+          <div className="relative flex w-full mt-16 bg-gray-800 rounded-lg p-4 py-16">
+  <div
+    className="absolute inset-0 rounded-lg"
+    style={{
+      backgroundImage: movie.poster_path ? `url(https://image.tmdb.org/t/p/w500${movie.poster_path})` : 'none',
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
+      opacity: 0.1,
+      zIndex: 0,
+    }}
+  ></div>
+
+  <img
+    src={movie.poster_path ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` : tempImg}
+    alt={movie.title}
+    className="relative w-3/12 h-auto rounded-lg ml-20 mr-10 z-10"
+  />
+  
+  <div className="relative ml-4 w-2/3 z-10">
+    <h1 className="text-2xl font-bold text-white">{movie.title}</h1>
+    <p className="text-lg text-gray-400 mt-2">
+      Genre: {movie.genres?.map((genre) => genre.name).join(", ") || "N/A"}
+    </p>
+    <p className="text-lg text-gray-400 mt-2">Rating: {movie.vote_average || "N/A"}</p>
+    <p className="text-lg text-gray-400 mt-2">
+      Languages: {movie.spoken_languages?.map((lang) => lang.name).join(", ") || "N/A"}
+    </p>
+    <p className="text-lg text-gray-400 mt-2">
+      Country: {movie.production_countries?.map((country) => country.name).join(", ") || "N/A"}
+    </p>
+    <p className="text-lg text-gray-400 mt-2">
+      Director: {movie.credits?.crew.find((person) => person.job === "Director")?.name || "N/A"}
+    </p>
+    <p className="text-gray-300 mt-4 text-xl">{movie.overview || "No description available"}</p>
+    <button
+      className="my-10 bg-green-500 px-2 py-3 rounded-md text-white"
+      onClick={getRecommendation}
+    >
+      Get Recommendation from this movie
+    </button>
+  </div>
+</div>
+
 
           <div className="w-full mt-8">
             <h2 className="text-3xl font-bold text-white mb-4 text-center">

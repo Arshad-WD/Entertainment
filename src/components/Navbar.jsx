@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import tempImg from '../assets/temperory.jpeg';
-import './responsive.css'
-
+import './responsive.css';
 
 const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -41,6 +40,10 @@ const Navbar = () => {
   const handleLogout = () => {
     setIsLoggedIn(false);
     navigate('/login');
+  };
+
+  const closeMobileMenu = () => {
+    setIsMobileMenuOpen(false); // Close menu after clicking
   };
 
   return (
@@ -90,11 +93,14 @@ const Navbar = () => {
         )}
       </div>
 
-      {isMobileMenuOpen && (
-        <div className='mobile-nav lg:hidden flex flex-col bg-gray-800 text-white p-4 absolute top-16 right-0 w-48 z-50'>
-          <Link to="/" className='nav-link-mobile' onClick={() => setIsMobileMenuOpen(false)}>HOME</Link>
-          <Link to="/movie" className='nav-link-mobile' onClick={() => setIsMobileMenuOpen(false)}>MOVIE</Link>
-          <Link to="/game" className='nav-link-mobile' onClick={() => setIsMobileMenuOpen(false)}>GAME</Link>
+      <div className={`mobile-nav lg:hidden flex flex-col bg-gray-800 text-white p-4 absolute top-16 right-0 w-48 z-50 transition-transform duration-300 ${
+        isMobileMenuOpen ? 'block' : 'hidden'
+      }`}>
+        <Link to="/" className='nav-link-mobile' onClick={closeMobileMenu}>HOME</Link>
+        <Link to="/movie" className='nav-link-mobile' onClick={closeMobileMenu}>MOVIE</Link>
+        <Link to="/game" className='nav-link-mobile' onClick={closeMobileMenu}>GAME</Link>
+        <Link to="/about" className='nav-link-mobile' onClick={closeMobileMenu}>About</Link>
+        {isLoggedIn && (
           <div className="flex items-center mt-2">
             <button onClick={() => setIsProfileMenuOpen(!isProfileMenuOpen)} className="flex items-center focus:outline-none">
               <img src={tempImg} alt="Profile" className="w-10 h-10 rounded-full z-10" />
@@ -107,10 +113,14 @@ const Navbar = () => {
               </div>
             )}
           </div>
-          <Link to="/login" className='nav-link-mobile' onClick={handleLogin}>LOGIN</Link>
-          <Link to="/sign-in" className='nav-link-mobile' onClick={handleLogin}>SIGN IN</Link>
-        </div>
-      )}
+        )}
+        {!isLoggedIn && (
+          <>
+            <Link to="/login" className='nav-link-mobile' onClick={handleLogin}>LOGIN</Link>
+            <Link to="/sign-in" className='nav-link-mobile' onClick={handleLogin}>SIGN IN</Link>
+          </>
+        )}
+      </div>
     </div>
   );
 };

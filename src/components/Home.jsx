@@ -3,6 +3,7 @@ import introvid from "../assets/introvid.mp4";
 import cinema from "../assets/cinema.mp4";
 import { Link } from "react-router-dom";
 import "../index.css";
+import Page1 from "../pages/page1";
 
 const Home = () => {
   const cursorRef = useRef(null);
@@ -241,6 +242,7 @@ const Home = () => {
         ref={cursorRayRef}
         className="cursor-ray fixed top-0 left-0 w-1 h-1 bg-white pointer-events-none z-50"
       ></div>
+      <Page1 />
     </>
   );
 };

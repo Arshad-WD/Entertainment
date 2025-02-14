@@ -1,0 +1,25 @@
+@font-face {
+    font-family: techi1;
+    src: url(/ElectricKicksItalic-PKW5g.ttf);
+  }
+  @font-face {
+    font-family: techi2;
+    src: url(/AsteroidType-Yz6L4.ttf);
+  }
+  
+  .section2{
+    position: relative;
+    perspective: 3000px;
+  }
+  /* .rotateText{
+    transform-origin: 100% 70%;
+  } */
+  
+  #page-in{
+    position: relative;
+  perspective: 2000px;
+  }
+  /* #tiltDiv{
+    width: fit-content;
+    transform: rotateY(30deg);
+  } */

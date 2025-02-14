@@ -61,6 +61,7 @@ const GameDetail = () => {
         <FaArrowLeft className="text-white" size={24} />
       </button>
 
+<<<<<<< HEAD
       <div className="flex flex-col md:flex-row w-full mt-10 bg-gray-800 rounded-lg shadow-lg p-4">
         <img
           src={game.background_image || tempImg}
@@ -81,6 +82,42 @@ const GameDetail = () => {
           <p className="text-gray-300 mt-4 text-xl">{game.summary || 'No description available'}</p>
         </div>
       </div>
+=======
+      <div
+  className="relative flex flex-col md:flex-row w-full mt-10 bg-gray-800 rounded-lg shadow-lg p-4"
+>
+  <div
+    className="absolute inset-0 rounded-lg"
+    style={{
+      backgroundImage: game.background_image ? `url(${game.background_image})` : 'none',
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
+      opacity: 0.1,
+      zIndex: 0,
+    }}
+  ></div>
+
+  <img
+    src={game.background_image || tempImg}
+    alt={game.name}
+    className="w-full md:w-4/12 h-auto rounded-lg shadow-lg object-cover z-10"
+  />
+  
+  <div className="relative ml-0 md:ml-6 mt-4 md:mt-0 w-full md:w-8/12 z-10">
+    <h1 className="text-3xl md:text-4xl font-bold text-white">{game.name}</h1>
+    <p className="text-lg text-gray-400 mt-2">Rating: {game.rating || 'N/A'}</p>
+    <p className="text-lg text-gray-400 mt-2">Release Date: {game.released || 'N/A'}</p>
+    <p className="text-lg text-gray-400 mt-2">
+      Platforms: {game.parent_platforms?.map(platform => platform.platform.name).join(', ') || 'N/A'}
+    </p>
+    <p className="text-lg text-gray-400 mt-2">
+      Genres: {game.genres?.map(genre => genre.name).join(', ') || 'N/A'}
+    </p>
+    <p className="text-lg text-gray-400 mt-2">Suggestions Count: {game.suggestions_count || 'N/A'}</p>
+    <p className="text-gray-300 mt-4 text-xl">{game.summary || 'No description available'}</p>
+  </div>
+</div>
+>>>>>>> 39a6dea (final commit)
 
       {/* Similar Games Section */}
       <div className="w-full mt-8">

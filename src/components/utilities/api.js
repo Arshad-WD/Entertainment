@@ -8,10 +8,23 @@ const handleResponse = async (response) => {
   return response.json();
 };
 
-export const fetchTopMovies = async () => {
+// Fetch languages
+export const fetchLanguages = async () => {
+  try {
+    const response = await fetch(`${baseUrl}/configuration/languages?api_key=${api_key}`);
+    const data = await handleResponse(response);
+    return data; // This returns the list of languages
+  } catch (error) {
+    console.error("Error fetching languages:", error);
+    return []; // Return an empty array in case of an error
+  }
+};
+
+// Existing functions...
+export const fetchTopMovies = async (language) => {
   try {
     const response = await fetch(
-      `${baseUrl}/trending/movie/week?api_key=${api_key}`
+      `${baseUrl}/trending/movie/week?api_key=${api_key}&language=${language}`
     );
     const data = await handleResponse(response);
     return data.results || []; // Ensure results are returned
@@ -23,10 +36,10 @@ export const fetchTopMovies = async () => {
 
 // fetchTopMovies().then(console.log);
 
-export const fetchTopSeries = async () => {
+export const fetchTopSeries = async (language) => {
   try {
     const response = await fetch(
-      `${baseUrl}/trending/tv/week?api_key=${api_key}`
+      `${baseUrl}/trending/tv/week?api_key=${api_key}&language=${language}`
     );
     const data = await handleResponse(response);
     return data.results || []; // Ensure results are returned
