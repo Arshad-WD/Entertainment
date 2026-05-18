@@ -13,6 +13,8 @@ import Sign_in from './components/sign_in.jsx';
 import About from './components/About.jsx';
 import Login from './components/Login.jsx'
 import Settings from './components/setting.jsx';
+import Prime from './components/Prime.jsx';
+import WatchParty from './components/WatchParty.jsx';
 
 const ConditionalNavbar = () => {
   const location = useLocation();
@@ -34,6 +36,8 @@ const App = () => (
         <Route path="/login" element={<Login />} />
         <Route path="/sign-in" element={<Sign_in/>}/>
         <Route path="/settings" element={<Settings/>}/>
+        <Route path="/prime" element={<Prime/>}/>
+        <Route path="/watchparty" element={<WatchParty/>}/>
         <Route path="*" element={<NotFound />} />
       </Routes>
     </ErrorBoundary>

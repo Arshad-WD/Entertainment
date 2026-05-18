@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import gsap from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
 import './Carasol.css';
@@ -6,7 +7,7 @@ import './Carasol.css';
 gsap.registerPlugin(ScrollTrigger);
 
 function Carasol() {
-
+  const navigate = useNavigate();
 
   useEffect(() => {
     const tl = gsap.timeline({
@@ -43,49 +44,48 @@ function Carasol() {
         marginTop: "0%",
       });
 
-      const handleScroll = () => {
-        const mouse = document.querySelector('.mouse');
-        const mouseBottom = document.querySelector('.mouseBottom');
-        
-        if (window.scrollY > 0) {
-          if (mouse) mouse.style.display = 'none';
-          if (mouseBottom) mouseBottom.style.display = 'none';
-        }
-      };
-  
-      // Add scroll event listener
-      window.addEventListener('scroll', handleScroll);
-  
-      // Cleanup event listener and GSAP scroll triggers
-      return () => {
-        window.removeEventListener('scroll', handleScroll); // Clean up scroll event listener
-        ScrollTrigger.getAll().forEach((trigger) => trigger.kill()); // Clean up ScrollTriggers
-      };
-    }, []);
+    const handleScroll = () => {
+      const mouse = document.querySelector('.mouse');
+      const mouseBottom = document.querySelector('.mouseBottom');
+      
+      if (window.scrollY > 0) {
+        if (mouse) mouse.style.display = 'none';
+        if (mouseBottom) mouseBottom.style.display = 'none';
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+    };
+  }, []);
 
   return (
     <div id="main">
       <div id="top">
-        <h1 id="top-h1">LuxeVista</h1>
+        <h1 id="top-h1" className="text-zinc-950">LuxeVista</h1>
       </div>
-      <div id="center">
+      <div id="center" className="bg-[#03000a]">
         <div className="content">
-          <h4>LuxeVista</h4>
-          <h3>
-            <i>Developer</i> done there work so,  <i>Now</i> it's your job to use this and appreciate.
+          <h4 className="text-xs uppercase tracking-widest text-red-500 font-extrabold">About Our Studio</h4>
+          <h3 className="text-white">
+            <i>Crafted</i> for cinematic fidelity and immersive interactivity. <i>Now</i> it is your gateway to explore.
           </h3>
-          <div className="btn">
-            <h5>ENTER MOVUE</h5>
-          </div>
+          <button 
+            className="px-6 py-2 bg-gradient-to-r from-red-600 to-pink-600 rounded-full text-white font-extrabold text-xs uppercase tracking-widest hover:scale-105 transition-transform cursor-pointer border-none"
+            onClick={() => navigate("/movie")}
+          >
+            Explore Movies
+          </button>
         </div>
       </div>
       <div id="bottom">
-        <h1 id="bottom-h1">LuxeVista</h1>
+        <h1 id="bottom-h1" className="text-zinc-950">LuxeVista</h1>
       </div>
-      <div className='mouseBottom'>
-        <div className='mouse'>
-
-        </div>
+      <div className="mouseBottom">
+        <div className="mouse"></div>
       </div>
     </div>
   );

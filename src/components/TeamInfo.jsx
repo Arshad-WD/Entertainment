@@ -40,32 +40,32 @@ function TeamInfo() {
           <div className='work_info'>
             <div className='work_left-bl'>
               <span className='work_num'>01</span>
-              <h2 className='title'>Shayan Ahmed <span className='stroke'>Backend And Idea</span></h2>
-              <button className='work_link' onClick={() => alert('View More clicked!')}>View More</button>
+              <h2 className='title'>Shayan Ahmed <span className='stroke'>Backend And Architect</span></h2>
+              <button className='work_link' onClick={() => alert('Shayan Ahmed is the Chief Architect of LuxeVista, designing the conceptual database architecture and high-performance backend schemas.')}>View Profile</button>
             </div>
           </div>
 
           <div className='work_info'>
             <div className='work_left-bl'>
               <span className='work_num'>02</span>
-              <h2 className='title'>Imran Ansari <span className='stroke'>Project Idea And Backend</span></h2>
-              <button className='work_link' onClick={() => alert('View More clicked!')}>View More</button>
+              <h2 className='title'>Imran Ansari <span className='stroke'>Lead Design & Backend</span></h2>
+              <button className='work_link' onClick={() => alert('Imran Ansari is our Lead Product Owner, coordinating API integrations across live TMDB & RAWG data grids.')}>View Profile</button>
             </div>
           </div>
 
           <div className='work_info'>
             <div className='work_left-bl'>
               <span className='work_num'>03</span>
-              <h2 className='title'>Arshad Chaudhary<span className='stroke'>Frontedn and Backend</span></h2>
-              <button className='work_link' onClick={() => alert('View More clicked!')}>View More</button>
+              <h2 className='title'>Arshad Chaudhary<span className='stroke'>Frontend and Backend</span></h2>
+              <button className='work_link' onClick={() => alert('Arshad Chaudhary is a Senior Full-Stack Engineer specializing in high-performance WebGL renders and Node.js microservices.')}>View More</button>
             </div>
           </div>
 
           <div className='work_info'>
             <div className='work_left-bl'>
               <span className='work_num'>04</span>
-              <h2 className='title'>Saif Ansari<span className='stroke'>Backend and Frontend</span></h2>
-              <button className='work_link' onClick={() => alert('View More clicked!')}>View More</button>
+              <h2 className='title'>Saif Ansari<span className='stroke'>UI/UX & Frontend</span></h2>
+              <button className='work_link' onClick={() => alert('Saif Ansari is our Principal UI/UX Architect, crafting elegant responsive glassmorphic cards and interactive scroll experiences.')}>View Profile</button>
             </div>
           </div>
         </div>
